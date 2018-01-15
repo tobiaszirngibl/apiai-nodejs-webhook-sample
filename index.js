@@ -2,7 +2,7 @@ const express = require('express')
 var unirest = require('unirest');
 const bodyParser = require('body-parser')
 const app = express()
-var result = "";
+var result = "test";
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 5000))
 
@@ -41,7 +41,6 @@ unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/con
 .header("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com")
 .end(function (result) {
   console.log(result.status, result.headers, result.body);
-  result = result.body;
 });
 
   // parameters are stored in req.body.result.parameters
