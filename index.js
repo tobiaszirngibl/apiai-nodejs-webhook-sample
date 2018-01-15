@@ -1,6 +1,8 @@
 const express = require('express')
+var unirest = require('unirest');
 const bodyParser = require('body-parser')
 const app = express()
+var result = "";
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 5000))
 
@@ -34,9 +36,17 @@ app.post('/webhook', function (req, res) {
   // the value of Action from api.ai is stored in req.body.result.action
   console.log('* Received action -- %s', req.body.result.action)
 
+unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/food/converse?text=donut+recipes")
+.header("X-Mashape-Key", "eB4slA65XimshJw9xMYuRG4XJ5qdp1vzOF2jsnzAGxOioS6ugP")
+.header("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com")
+.end(function (result) {
+  console.log(result.status, result.headers, result.body);
+  result = result.body;
+});
+
   // parameters are stored in req.body.result.parameters
   var userName = req.body.result.parameters['given-name']
-  var webhookReply = 'Hello ' + userName + '! Welcome from the webhook and me.'
+  var webhookReply = 'Hello ' + userName + '! Welcome from the webhook and me. '+ result;
 
   // the most basic response
   res.status(200).json({
